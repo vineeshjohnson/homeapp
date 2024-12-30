@@ -9,23 +9,31 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _lightcontroller = ValueNotifier<bool>(false);
-    final _accontroller = ValueNotifier<bool>(false);
-    final _tvcontroller = ValueNotifier<bool>(false);
-    final _fancontroller = ValueNotifier<bool>(false);
+    final lightcontroller = ValueNotifier<bool>(false);
+    final accontroller = ValueNotifier<bool>(false);
+    final tvcontroller = ValueNotifier<bool>(false);
+    final fancontroller = ValueNotifier<bool>(false);
 
     List<ValueNotifier<bool>> list = [
-      _lightcontroller,
-      _accontroller,
-      _tvcontroller,
-      _fancontroller
+      lightcontroller,
+      accontroller,
+      tvcontroller,
+      fancontroller
     ];
 
     return BlocProvider(
       create: (context) => ControllerBloc(),
       child: BlocConsumer<ControllerBloc, ControllerState>(
         listener: (context, state) {
-          // TODO: implement listener
+          if (state is LightButtonClickedState) {
+            lightcontroller.value = state.result;
+          } else if (state is AcButtonClickedState) {
+            accontroller.value = state.result;
+          } else if (state is TvButtonClickedState) {
+            tvcontroller.value = state.result;
+          } else if (state is FanButtonClickedState) {
+            fancontroller.value = state.result;
+          }
         },
         builder: (context, state) {
           return Scaffold(
@@ -33,11 +41,11 @@ class MyHomePage extends StatelessWidget {
             body: SafeArea(
               child: SingleChildScrollView(
                 child: Padding(
-                  padding: EdgeInsets.all(25.0),
+                  padding: const EdgeInsets.all(25.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
+                      const Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Icon(
@@ -50,43 +58,43 @@ class MyHomePage extends StatelessWidget {
                           )
                         ],
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 40,
                       ),
                       Text(
                         'Welcome Home,',
                         style: TextStyle(color: Colors.grey[700], fontSize: 25),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 5,
                       ),
-                      Text(
+                      const Text(
                         'VINEESH',
                         style: TextStyle(
                             fontSize: 60, fontWeight: FontWeight.bold),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
-                      Divider(),
-                      SizedBox(
+                      const Divider(),
+                      const SizedBox(
                         height: 10,
                       ),
-                      Text(
+                      const Text(
                         'Smart Devices',
                         style: TextStyle(
                             fontSize: 27, fontWeight: FontWeight.bold),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 20,
                       ),
                       SizedBox(
-                        height: 600,
+                        height: 800,
                         child: GridView.builder(
                           physics: const NeverScrollableScrollPhysics(),
                           gridDelegate:
                               const SliverGridDelegateWithFixedCrossAxisCount(
-                            childAspectRatio: 2 / 3,
+                            childAspectRatio: 2 / 4,
                             crossAxisCount: 2,
                             mainAxisSpacing: 15,
                             crossAxisSpacing: 30,
@@ -96,6 +104,7 @@ class MyHomePage extends StatelessWidget {
                             controller: list[index],
                             image: tabimages[index],
                             name: tabnames[index],
+                            index: index,
                           ),
                         ),
                       ),
